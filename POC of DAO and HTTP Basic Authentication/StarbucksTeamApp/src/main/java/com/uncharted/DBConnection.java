@@ -13,7 +13,7 @@ public class DBConnection
         {
 
             Class.forName("com.mysql.jdbc.Driver");
-            con=DriverManager.getConnection("jdbc:mysql:/");
+            con=DriverManager.getConnection("jdbc:mysql://uncharted4.c1bk7x4hj9tm.us-west-1.rds.amazonaws.com:3306/starbucks","Uncharted4","Uncharted4");
             System.out.println("The connection is:"+con);
 
 
