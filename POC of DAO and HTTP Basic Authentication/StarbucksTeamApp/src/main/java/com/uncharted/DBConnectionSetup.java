@@ -13,7 +13,7 @@ public class DBConnectionSetup {
     private static void getConnection() throws Exception
     {
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://";
+        String url = "";
         String username = "";
         String password = "";
         Class.forName(driver);
