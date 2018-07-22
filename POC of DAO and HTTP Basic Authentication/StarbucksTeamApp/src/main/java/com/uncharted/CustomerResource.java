@@ -3,6 +3,7 @@ package com.uncharted;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+@Path("mycustomer")
 public class CustomerResource {
 
     @GET
