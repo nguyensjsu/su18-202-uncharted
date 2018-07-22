@@ -6,8 +6,7 @@ public class EmployeeService {
     {
         try {
             EmployeeDAO dao = EmployeeDAOFactory.getInstance();
-            int count = dao.insertEmployee(bo);
-            if (count == 1)
+            if(dao.insertEmployee(bo))
                 return "registration success";
             return "registration failed";
         }

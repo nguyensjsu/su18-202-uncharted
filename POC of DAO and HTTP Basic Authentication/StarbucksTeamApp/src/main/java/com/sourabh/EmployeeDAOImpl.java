@@ -7,13 +7,13 @@ public class EmployeeDAOImpl implements EmployeeDAO
 {
     //private static final String INSERT_EMPLOYEE_QUERY="insert into employee values (?)";
 
-    public int insertEmployee(EmployeeBO bo) throws Exception
+    public boolean insertEmployee(EmployeeBO bo) throws Exception
     {
         try {
             String strQuery = "insert into employee value (null,'" + bo.getName() + "')";
             if (DBConnectionSetup.getInsertUpdateDeleteQueryResult(strQuery))
-                return 0;
-            return 1;
+                return true;
+            return false;
         }
         catch (Exception ex)
         {
