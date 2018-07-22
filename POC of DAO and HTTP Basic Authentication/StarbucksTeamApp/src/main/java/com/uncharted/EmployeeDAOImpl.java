@@ -1,6 +1,5 @@
-package com.sourabh;
+package com.uncharted;
 
-import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 
 public class EmployeeDAOImpl implements EmployeeDAO

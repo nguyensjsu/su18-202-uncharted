@@ -1,4 +1,4 @@
-package com.sourabh;
+package com.uncharted;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,9 +13,9 @@ public class DBConnectionSetup {
     private static void getConnection() throws Exception
     {
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://<dburl>:<port>/<dbname>";
-        String username = "<un>";
-        String password = "<pwd>";
+        String url = "jdbc:mysql://";
+        String username = "";
+        String password = "";
         Class.forName(driver);
 
         con = DriverManager.getConnection(url, username, password);
