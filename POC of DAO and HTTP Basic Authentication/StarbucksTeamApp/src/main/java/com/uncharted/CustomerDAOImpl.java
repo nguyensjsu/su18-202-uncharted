@@ -157,5 +157,43 @@ public class CustomerDAOImpl implements CustomerDAO
         return flagForUpdate;
     }
 
+    public boolean deleteCustomer(int id)
+    {
+
+        Connection connection=null;
+        PreparedStatement statementObject=null;
+        boolean flagForDelete=false;
+
+        String query="DELETE FROM customer where customer_id="+id;
+
+        try
+        {
+
+            statementObject = connection.prepareStatement(query);
+            flagForDelete= statementObject.execute();
+
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            try
+            {
+
+                if(statementObject!=null)
+                    statementObject.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return flagForDelete;
+    }
+
 
 }

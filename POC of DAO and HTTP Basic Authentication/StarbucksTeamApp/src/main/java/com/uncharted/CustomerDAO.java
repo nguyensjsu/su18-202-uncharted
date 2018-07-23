@@ -8,4 +8,6 @@ public interface CustomerDAO {
 
     public boolean updateCustomer(CustomerBO customerBO);
 
+    public boolean deleteCustomer(int id);
+
 }
