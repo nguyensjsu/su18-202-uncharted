@@ -6,7 +6,15 @@ public class OrderService {
     public boolean insertOrUpdateOrder(int customerid, int[] menuitems)
     {
         try {
-            return OrderDAOFactory.getInstance().insertupdateOrder(customerid ,menuitems);
+            double total=0;
+
+
+
+            //**fetch total from menuitems
+
+
+
+            return OrderDAOFactory.getInstance().insertupdateOrder(customerid ,menuitems, total);
         }
         catch(Exception ex)
         {
@@ -42,6 +50,13 @@ public class OrderService {
 
     public String describeOrderDetails(int orderid)
     {
+
+
+        //**call all menu items
+        //**get order
+        //**loop to create description
+
+
         return null;
     }
 

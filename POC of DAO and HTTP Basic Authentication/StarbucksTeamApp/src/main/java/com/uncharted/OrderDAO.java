@@ -9,7 +9,7 @@ public interface OrderDAO {
 
     //POST
     //if unpaid row exists then update
-    boolean insertupdateOrder(int customerid, int[] menuItems) throws Exception;
+    boolean insertupdateOrder(int customerid, int[] menuItems, double total) throws Exception;
     boolean payForOrder(int orderid) throws Exception;
 
     //DELETE

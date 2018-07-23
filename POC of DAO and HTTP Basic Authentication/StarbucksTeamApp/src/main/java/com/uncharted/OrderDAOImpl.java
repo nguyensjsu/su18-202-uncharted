@@ -74,8 +74,53 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-    public boolean insertupdateOrder(int customerid, int[] menuItems) throws Exception {
-        return false;
+    public boolean insertupdateOrder(int customerid, int[] menuItems, double total) throws Exception {
+        //check if row with "" payment datetime exists then update else insert
+        try {
+            String strQuery = "select count(*) as cnt from "+TABLENAME+" where "+COL_customer_id+"=" + customerid + " and "+COL_payment_date_time+" is null;";
+            ResultSet rs = DBConnectionSetup.getSelectQueryResult(strQuery);
+            if (!rs.next()) {                            //if rs.next() returns false
+                System.out.println("No records found");
+                return false;
+            } else
+            {
+                int count=-1;
+                boolean flag = false;
+                do {
+                    if (!flag) {
+                        count=rs.getInt("cnt");
+                        flag = true;
+                    } else {
+                        System.out.println("More than 1 row with same id");
+                        return false;
+                    }
+                } while (rs.next());
+
+                String mi="";
+                for(int i=0;i<menuItems.length;i++)
+                {
+                    mi+=menuItems[i]+",";
+                }
+
+                String insupdQuery="";
+                if(count==0)
+                    insupdQuery="insert into Orders values(null,'"+mi+"',null,"+total+","+customerid+"); ";
+                else if(count==1)
+                    insupdQuery="update "+TABLENAME+" set "+COL_order_details+"='"+mi+"', "+COL_total+"="+total+" where "+COL_customer_id+"="+customerid+" and "+COL_payment_date_time +" is null;";
+                else
+                    return false;
+                return DBConnectionSetup.getInsertUpdateDeleteQueryResult(insupdQuery);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex);
+            throw ex;
+        }
+        finally
+        {
+            DBConnectionSetup.closeConnection();
+        }
     }
 
     public boolean payForOrder(int orderid) throws Exception {
@@ -110,9 +155,7 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-
     private OrderBO mSetOrderObject(ResultSet rs) throws Exception {
-
         OrderBO or = new OrderBO();
         or.setOrder_id(rs.getInt(COL_order_id));
         or.setOrder_details(rs.getString(COL_order_details));
@@ -121,24 +164,4 @@ public class OrderDAOImpl implements OrderDAO {
         or.setCustomer_id(rs.getInt(COL_customer_id));
         return or;
     }
-
-    /*public boolean insertEmployee(EmployeeBO bo) throws Exception
-    {
-        try {
-            String strQuery = "insert into employee value (null,'" + bo.getName() + "')";
-            if (DBConnectionSetup.getInsertUpdateDeleteQueryResult(strQuery))
-                return true;
-            return false;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            DBConnectionSetup.closeConnection();
-        }
-
-    }
-    */
 }

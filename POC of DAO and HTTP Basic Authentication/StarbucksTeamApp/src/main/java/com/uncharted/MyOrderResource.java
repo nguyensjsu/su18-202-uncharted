@@ -1,118 +1,200 @@
 package com.uncharted;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import java.util.List;
 
 import static com.uncharted.AuthenticationClass.bCheckIfAuthenticated;
 
 @Path("order")
 public class MyOrderResource {
     @GET
-    @Path("/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getOrderById(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
+    @Path("/{custid}/{orderid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderById(@PathParam("custid") int custid, @PathParam("orderid") int orderid, @HeaderParam("authorization") String authString) {
         try {
-            if (!bCheckIfAuthenticated(authString)) {
-                return "error:\"User not authenticated\"";
+            if (!bCheckIfAuthenticated(authString, custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
             }
 
             OrderService os=new OrderService();
-            //******see what to return here
-            return os.getOrderById(id).getOrder_details();
+            OrderBO bo= os.getOrderById(orderid);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString= mapper.writeValueAsString(bo);
+            return Response.ok("jsonString:"+jsonString).build();
+            //return Response.ok().build();
         }
         catch (Exception ex)
         {
-            return "error: "+ ex.getMessage();
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
         }
     }
 
     @GET
-    @Path("/cust/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getOrderByCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
+    @Path("describe/{custid}/{orderid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderDescriptionById(@PathParam("custid") int custid,@PathParam("orderid") int orderid, @HeaderParam("authorization") String authString) {
         try {
-            if (!bCheckIfAuthenticated(authString)) {
-                return "error:\"User not authenticated\"";
+            if (!bCheckIfAuthenticated(authString,custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
             }
 
             OrderService os=new OrderService();
-            //******see what to return here
-            return os.getOrdersByCustomer(id).get(0).getOrder_details();
+            String desc= os.describeOrderDetails(orderid);
+            return Response.ok("{\"Order Description\":\""+desc+"\"}").build();
+            //return Response.ok().build();
         }
         catch (Exception ex)
         {
-            return "error: "+ ex.getMessage();
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
+        }
+    }
+
+    @GET
+    @Path("/cust/{custid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOrderByCustomer(@PathParam("custid") int custid, @HeaderParam("authorization") String authString) {
+        try {
+            if (!bCheckIfAuthenticated(authString,custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
+            }
+
+            OrderService os=new OrderService();
+            List<OrderBO> bo= os.getOrdersByCustomer(custid);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString= mapper.writeValueAsString(bo);
+            return Response.ok("jsonString:"+jsonString).build();
+            //return os.getOrdersByCustomer(id).get(0).getOrder_details();
+        }
+        catch (Exception ex)
+        {
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
         }
     }
 
     @PUT
-    @Path("/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String putPayForOrder(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
+    @Path("/{custid}/{orderid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response putPayForOrder(@PathParam("custid") int custid,@PathParam("orderid") int orderid, @HeaderParam("authorization") String authString) {
         try {
-            if (!bCheckIfAuthenticated(authString)) {
-                return "error:\"User not authenticated\"";
+            if (!bCheckIfAuthenticated(authString,custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
             }
 
-            //**call order service and fetch total
+            //call order service and fetch total
+            OrderService os=new OrderService();
+            OrderBO bo=os.getOrderById(orderid);
+            double total=bo.getOrder_total();
+
+
+
+
+
+
+            //**put below 2 in transaction
             //**call card service and reduce card balance
 
-            OrderService os=new OrderService();
-            if(os.payForOrder(id))
-                return "payment success";
-            //******see what to return here
-            return "payment failed";
+
+
+
+
+
+
+            //update payment datetime in orders
+            if(os.payForOrder(orderid))
+                return Response.ok("{\"Order Payment\":\"Successful\"}").build();
+                //return "payment success";
+            return Response.ok("{\"Order Payment\":\"Failed\"}").build();
+            //return "payment failed";
         }
         catch (Exception ex)
         {
-            return "error: "+ ex.getMessage();
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
         }
     }
 
     @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String deleteOrder(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
+    @Path("/{custid}/{orderid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteOrder(@PathParam("custid") int custid, @PathParam("orderid") int orderid,@HeaderParam("authorization") String authString) {
         try {
-            if (!bCheckIfAuthenticated(authString)) {
-                return "error:\"User not authenticated\"";
+            if (!bCheckIfAuthenticated(authString,custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
             }
 
             OrderService os=new OrderService();
-            if(os.deleteOrder(id))
-                return "delete success";
-            //******see what to return here
-            return "delete failed";
+            if(os.deleteOrder(orderid))
+                return Response.ok("{\"Order Deletion\":\"Successful\"}").build();
+                //return "delete success";
+            return Response.ok("{\"Order Deletion\":\"Failed\"}").build();
+            //return "delete failed";
         }
         catch (Exception ex)
         {
-            return "error: "+ ex.getMessage();
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
         }
     }
 
     @POST
-    @Path("/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String insertUpdateOrder(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
+    @Path("cust/{custid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response insertUpdateOrder(@PathParam("custid") int custid, @HeaderParam("authorization") String authString, String jsonBody) {
         try {
-            if (!bCheckIfAuthenticated(authString)) {
-                return "error:\"User not authenticated\"";
+            if (!bCheckIfAuthenticated(authString,custid)) {
+                //return "error:\"User not authenticated\"";
+                return Response.status(401).build();
             }
 
-            //check if card added else dont allow
 
-            //**check if row with "" payment datetime exists
-            //then update else insert
 
-            /*OrderService os=new OrderService();
-            if(os.deleteOrder(id))
-                return "delete success";
-            //******see what to return here*/
-            return "delete failed";
+
+
+
+            //**check if card added else don't allow
+
+
+
+
+
+
+
+            JSONObject jsonObj = new JSONObject(jsonBody);
+            JSONArray array = jsonObj.optJSONArray("menuitems");
+            if (array == null) {
+                return Response.status(422).build();
+            }
+            int[] items = new int[array.length()];
+
+            for (int i = 0; i < array.length(); ++i) {
+                items[i] = array.optInt(i);
+            }
+            OrderService os=new OrderService();
+            if(os.insertOrUpdateOrder(custid,items))
+                return Response.ok("{\"Order Insertion\":\"Success\"}").build();
+            return Response.ok("{\"Order Insertion\":\"Failed\"}").build();
+//            return "delete failed";
         }
         catch (Exception ex)
         {
-            return "error: "+ ex.getMessage();
+            //return "error: "+ ex.getMessage();
+            return Response.status(500).build();
         }
     }
 }
