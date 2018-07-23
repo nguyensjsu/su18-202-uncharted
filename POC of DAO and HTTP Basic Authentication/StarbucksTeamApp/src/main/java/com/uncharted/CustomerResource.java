@@ -53,12 +53,12 @@ public class CustomerResource {
 
         JSONObject obj = new JSONObject(jsonMessage);
 
-        System.out.println("Json object is:"+obj);
+        System.out.println("Json object is:"+obj.getString("customer_id"));
 
-        System.out.println("Json object is:"+obj);
-        System.out.println("Json object is:"+obj);
-        System.out.println("Json object is:"+obj);
-        System.out.println("Json object is:"+obj);
+        System.out.println("Json object is:"+obj.getString("customer_id"));
+        System.out.println("Json object is:"+obj.getString("customer_id"));
+        System.out.println("Json object is:"+obj.getString("customer_id"));
+        System.out.println("Json object is:"+obj.getString("customer_id"));
 
 
 

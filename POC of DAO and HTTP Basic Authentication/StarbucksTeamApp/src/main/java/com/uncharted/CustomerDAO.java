@@ -10,4 +10,6 @@ public interface CustomerDAO {
 
     public boolean deleteCustomer(int id);
 
+    public boolean getCustomerByUserAndPassword(String user,String password);
+
 }

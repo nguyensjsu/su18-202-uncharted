@@ -27,6 +27,29 @@ public class AuthenticationClass
 
         return validCustomer;
     }
+
+    public static boolean bCheckIfAuthenticated(String authString) throws IOException
+    {
+        boolean validCustomer=false;
+        String decodedAuth;
+        //String[] authList = authString.split("\\s+");
+        String authInfo =authString;
+        byte[] byteArr = null;
+        try {
+            byteArr = new BASE64Decoder().decodeBuffer(authInfo);
+        } catch (IOException ex) {
+            throw ex;
+        }
+        decodedAuth = new String(byteArr);
+        System.out.println(decodedAuth);
+
+
+        validCustomer=checkIfValidCustomer(decodedAuth);
+
+        return validCustomer;
+    }
+
+
     public static boolean checkIfValidCustomer(String userAndPassword,int id)
     {
         boolean flag=false;
@@ -49,6 +72,20 @@ public class AuthenticationClass
             flag=true;
 
 
+
+        return flag;
+    }
+
+    public static boolean checkIfValidCustomer(String userAndPassword)
+    {
+        String user=null;
+        String password=null;
+        String[] data=null;
+        boolean flag=false;
+        CustomerDAO customerDAO=null;
+        customerDAO=CustomerDAOFactory.getInstance();
+        data= userAndPassword.split(":");
+        flag=customerDAO.getCustomerByUserAndPassword(data[0],data[1]);
 
         return flag;
     }

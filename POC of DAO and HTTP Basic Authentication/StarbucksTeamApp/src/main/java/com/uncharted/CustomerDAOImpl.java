@@ -64,6 +64,63 @@ public class CustomerDAOImpl implements CustomerDAO
         return customer;
     }
 
+    public boolean getCustomerByUserAndPassword(String user,String password)
+    {
+        CustomerBO customer=new CustomerBO();
+        Connection connection=null;
+        Statement st=null;
+        ResultSet rs=null;
+        PreparedStatement statementObject=null;
+        boolean flag=false;
+
+        String query="select * from customer where customer_user_name=? and customer_password=?";
+
+        try
+        {
+            connection =DBConnection.getConnection();
+            statementObject=connection.prepareStatement(query);
+            System.out.println("Query is:"+query);
+
+            if(rs.next())
+            {
+                flag=true;
+            }
+            else
+            {
+                System.out.println("Empty value in result set");
+            }
+
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+        finally {
+            try
+            {
+                if(rs!=null)
+                    rs.close();
+
+                if(st!=null)
+                    st.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return flag;
+    }
+
+
+
+
     public boolean addCustomer(CustomerBO customerBO)
     {
 
