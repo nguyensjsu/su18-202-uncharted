@@ -43,29 +43,32 @@ public class CustomerResource {
 
 
     @POST
-    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertCustomer(String jsonMessage)
     {
         int status=0;
         System.out.println(jsonMessage);
-
         JSONObject obj = new JSONObject(jsonMessage);
+        boolean flag=false;
 
-        System.out.println("Json object is:"+obj.getString("customer_id"));
-
-        System.out.println("Json object is:"+obj.getString("customer_id"));
-        System.out.println("Json object is:"+obj.getString("customer_id"));
-        System.out.println("Json object is:"+obj.getString("customer_id"));
-        System.out.println("Json object is:"+obj.getString("customer_id"));
-
+        CustomerBO customerBO=new CustomerBO();
+        customerBO.setCustomer_id(obj.getInt("customer_id"));
+        customerBO.setCustomer_name(obj.getString("customer_name"));
+        customerBO.setCustomer_user_name(obj.getString("customer_user_name"));
+        customerBO.setCustomer_password(obj.getString("customer_password"));
+        customerBO.setCustomer_gender(obj.getString("customer_gender"));
+        customerBO.setCustomer_birth(obj.getString("customer_birth"));
 
 
         try
         {
-            //request
+            CustomerDAO customerDAO=null;
+            customerDAO=CustomerDAOFactory.getInstance();
+            flag=customerDAO.addCustomer(customerBO);
 
+            if(flag)
+                status=201;
 
 
         } catch (Exception ex)
@@ -79,12 +82,32 @@ public class CustomerResource {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(@PathParam("id") int id,String jsonMessage)
     {
 
         int status=0;
+        System.out.println(jsonMessage);
+        JSONObject obj = new JSONObject(jsonMessage);
+        boolean flag=false;
+
+        CustomerBO customerBO=new CustomerBO();
+        customerBO.setCustomer_name(obj.getString("customer_name"));
+        customerBO.setCustomer_user_name(obj.getString("customer_user_name"));
+        customerBO.setCustomer_password(obj.getString("customer_password"));
+        customerBO.setCustomer_gender(obj.getString("customer_gender"));
+        customerBO.setCustomer_birth(obj.getString("customer_birth"));
+        customerBO.setCustomer_id(id);
+
+
         try
         {
+            CustomerDAO customerDAO=null;
+            customerDAO=CustomerDAOFactory.getInstance();
+            flag=customerDAO.updateCustomer(customerBO);
+
+            if(flag)
+                status=200;
 
 
         } catch (Exception ex)
@@ -92,7 +115,7 @@ public class CustomerResource {
             ex.printStackTrace();
             status=500;
         }
-        return Response.status(200).build();
+        return Response.status(status).build();
     }
 
     @DELETE

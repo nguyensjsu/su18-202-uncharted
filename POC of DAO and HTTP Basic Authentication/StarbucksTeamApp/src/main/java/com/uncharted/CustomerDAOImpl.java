@@ -132,6 +132,7 @@ public class CustomerDAOImpl implements CustomerDAO
 
         try
         {
+            connection =DBConnection.getConnection();
             statementObject=connection.prepareStatement(query);
             System.out.println("Query is:"+query);
             statementObject = connection.prepareStatement(query);
@@ -180,6 +181,7 @@ public class CustomerDAOImpl implements CustomerDAO
         try
         {
 
+            connection =DBConnection.getConnection();
             statementObject = connection.prepareStatement(query);
 
             statementObject.setString(1, customerBO.getCustomer_name());
