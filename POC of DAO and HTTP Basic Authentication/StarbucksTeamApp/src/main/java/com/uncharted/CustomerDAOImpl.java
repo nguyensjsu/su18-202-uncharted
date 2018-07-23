@@ -168,7 +168,7 @@ public class CustomerDAOImpl implements CustomerDAO
 
         try
         {
-
+            connection =DBConnection.getConnection();
             statementObject = connection.prepareStatement(query);
             flagForDelete= statementObject.execute();
 

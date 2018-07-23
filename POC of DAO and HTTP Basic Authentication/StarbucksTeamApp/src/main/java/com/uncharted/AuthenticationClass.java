@@ -7,7 +7,7 @@ import java.io.IOException;
 public class AuthenticationClass
 {
     static CustomerBO customerBO=null;
-    public static boolean bCheckIfAuthenticated(String authString) throws IOException
+    public static boolean bCheckIfAuthenticated(String authString,int id) throws IOException
     {
         boolean validCustomer=false;
         String decodedAuth;
@@ -23,16 +23,16 @@ public class AuthenticationClass
         System.out.println(decodedAuth);
 
 
-        validCustomer=checkIfValidCustomer(decodedAuth);
+        validCustomer=checkIfValidCustomer(decodedAuth,id);
 
         return validCustomer;
     }
-    public static boolean checkIfValidCustomer(String userAndPassword)
+    public static boolean checkIfValidCustomer(String userAndPassword,int id)
     {
         boolean flag=false;
         CustomerDAO customerDAO=null;
         customerDAO=CustomerDAOFactory.getInstance();
-        customerBO=customerDAO.getCustomer(1);
+        customerBO=customerDAO.getCustomer(id);
         String user=null;
         String password=null;
         String[] data=null;

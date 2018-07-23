@@ -1,6 +1,7 @@
 package com.uncharted;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -16,7 +17,7 @@ public class CustomerResource {
     public Response getIt(@PathParam("id") int id, @HeaderParam("authorization") String authString) {
         String jsonString=null;
         try {
-            if (!AuthenticationClass.bCheckIfAuthenticated(authString)) {
+            if (!AuthenticationClass.bCheckIfAuthenticated(authString,id)) {
                 String json = "{error:User not authenticated}";
 
               return Response.status(401).build();
@@ -40,21 +41,39 @@ public class CustomerResource {
         return Response.ok(jsonString).build();
     }
 
+
     @POST
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response insertCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response insertCustomer(String jsonMessage)
     {
+        int status=0;
+        System.out.println(jsonMessage);
+
+        JSONObject obj = new JSONObject(jsonMessage);
+
+        System.out.println("Json object is:"+obj);
+
+        System.out.println("Json object is:"+obj);
+        System.out.println("Json object is:"+obj);
+        System.out.println("Json object is:"+obj);
+        System.out.println("Json object is:"+obj);
+
+
 
         try
         {
+            //request
+
 
 
         } catch (Exception ex)
         {
             ex.printStackTrace();
+            status=500;
         }
-      return Response.status(200).build();
+      return Response.status(status).build();
     }
 
     @PUT
@@ -63,6 +82,7 @@ public class CustomerResource {
     public Response updateCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString)
     {
 
+        int status=0;
         try
         {
 
@@ -70,6 +90,7 @@ public class CustomerResource {
         } catch (Exception ex)
         {
             ex.printStackTrace();
+            status=500;
         }
         return Response.status(200).build();
     }
@@ -80,15 +101,27 @@ public class CustomerResource {
     public Response deleteCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString)
     {
 
+        boolean isDeleted=false;
+        int status = 0;
         try
         {
+
+            CustomerDAO customerDAO=null;
+            customerDAO=CustomerDAOFactory.getInstance();
+            isDeleted= customerDAO.deleteCustomer(1);
+
+            if(isDeleted)
+             status=200;
+            else
+             status=404;
 
 
         } catch (Exception ex)
         {
             ex.printStackTrace();
+            status=500;
         }
-        return Response.status(200).build();
+        return Response.status(status).build();
     }
 
 }
