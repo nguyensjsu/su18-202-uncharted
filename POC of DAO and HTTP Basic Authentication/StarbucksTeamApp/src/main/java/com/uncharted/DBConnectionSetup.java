@@ -13,9 +13,9 @@ public class DBConnectionSetup {
     private static void getConnection() throws Exception
     {
         String driver = "com.mysql.jdbc.Driver";
-        String url = "";
-        String username = "";
-        String password = "";
+        String url = "jdbc:mysql://uncharted4.c1bk7x4hj9tm.us-west-1.rds.amazonaws.com:3306/starbucks";
+        String username = "Uncharted4";
+        String password = "Uncharted4";
         Class.forName(driver);
 
         con = DriverManager.getConnection(url, username, password);
@@ -53,8 +53,10 @@ public class DBConnectionSetup {
         getConnection();
         if(con!=null) {
             Statement stmt = con.createStatement();
-            if (stmt != null)
-                return stmt.execute(query);
+            if (stmt != null) {
+                //**execute returns false if successful
+                return !stmt.execute(query);
+            }
         }
         return false;
     }

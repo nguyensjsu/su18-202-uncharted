@@ -45,13 +45,27 @@ public class OrderService {
         return null;
     }
 
-    public String payForOrder(int orderid)
+    public boolean payForOrder(int orderid)
     {
-        return null;
+        try {
+            return OrderDAOFactory.getInstance().payForOrder(orderid);
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex);
+            return false;
+        }
     }
 
-    public String deleteOrder(int orderid)
+    public boolean deleteOrder(int orderid)
     {
-        return null;
+        try {
+            return OrderDAOFactory.getInstance().deleteOrder(orderid);
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex);
+            return false;
+        }
     }
 }
