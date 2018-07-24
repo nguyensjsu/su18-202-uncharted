@@ -39,7 +39,7 @@ public class MyOrderResource {
     }
 
     @GET
-    @Path("describe/{custid}/{orderid}")
+    @Path("/describe/{custid}/{orderid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrderDescriptionById(@PathParam("custid") int custid,@PathParam("orderid") int orderid, @HeaderParam("authorization") String authString) {
         try {
@@ -50,7 +50,7 @@ public class MyOrderResource {
 
             OrderService os=new OrderService();
             String desc= os.describeOrderDetails(orderid);
-            return Response.ok("{\"Order Description\":\""+desc+"\"}").build();
+            return Response.ok("{\"Order Description\":\""+desc.substring(0,desc.length()-3)+"\"}").build();
             //return Response.ok().build();
         }
         catch (Exception ex)
@@ -105,7 +105,7 @@ public class MyOrderResource {
 
 
             //**put below 2 in transaction
-            //**call card service and reduce card balance
+            //**call card service and try to reduce card balance if success only then allow payment
 
 
 
@@ -152,7 +152,7 @@ public class MyOrderResource {
     }
 
     @POST
-    @Path("cust/{custid}")
+    @Path("/cust/{custid}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertUpdateOrder(@PathParam("custid") int custid, @HeaderParam("authorization") String authString, String jsonBody) {

@@ -1,18 +1,24 @@
 package com.uncharted;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
-    public boolean insertOrUpdateOrder(int customerid, int[] menuitems)
+    public boolean insertOrUpdateOrder(int customerid, final int[] menuitems)
     {
         try {
             double total=0;
 
+            //fetch total from menuitems
+            MenuService ms=new MenuService();
+            ArrayList<MenuBO> arrMenuBO=ms.getAllMenuItems();
 
-
-            //**fetch total from menuitems
-
-
+            for(int i=0;i<menuitems.length;i++)
+            {
+                final int itemid = menuitems[i];
+                MenuBO b= arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
+                total+=b.getItemPrice();
+            }
 
             return OrderDAOFactory.getInstance().insertupdateOrder(customerid ,menuitems, total);
         }
@@ -48,16 +54,36 @@ public class OrderService {
 
     }
 
-    public String describeOrderDetails(int orderid)
+    public String describeOrderDetails(int orderid) throws Exception
     {
+        //get order
+        OrderBO bo=OrderDAOFactory.getInstance().getOrder(orderid);
+        String strmenuitems=bo.getOrder_details();
+        String[] items=strmenuitems.split(",");
+        ArrayList<Integer> mi=new ArrayList<>();
+        for(int i=0;i<items.length;i++)
+        {
+            try{
+                mi.add(Integer.parseInt(items[i]));
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        int[] menuitems = mi.stream().mapToInt(i -> i).toArray();
 
+        //call all menu items loop to create description
+        MenuService ms=new MenuService();
+        ArrayList<MenuBO> arrMenuBO=ms.getAllMenuItems();
 
-        //**call all menu items
-        //**get order
-        //**loop to create description
-
-
-        return null;
+        String desc="";
+        for(int i=0;i<menuitems.length;i++)
+        {
+            final int itemid = menuitems[i];
+            MenuBO b= arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
+            desc+=b.getItemName()+" + ";
+        }
+        return desc;
     }
 
     public boolean payForOrder(int orderid)
