@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 
 
 @Path("mycustomer")
@@ -40,6 +41,36 @@ public class CustomerResource {
         }
         return Response.ok(jsonString).build();
     }
+
+
+    @GET
+    @Path("cutomerName/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getbyName(@PathParam("name") String name)
+    {
+        String jsonString="";
+        String temp="";
+            try
+            {
+
+              ObjectMapper mapper = new ObjectMapper();
+               ArrayList<CustomerBO> customerBOArrayList=AuthenticationClass.getUserInfo(name);
+                for(int i=0;i<customerBOArrayList.size();i++)
+                {
+                    temp = mapper.writeValueAsString(customerBOArrayList.get(i));
+                    jsonString=jsonString+temp;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
+
+        return Response.ok(jsonString).build();
+    }
+
 
 
     @POST

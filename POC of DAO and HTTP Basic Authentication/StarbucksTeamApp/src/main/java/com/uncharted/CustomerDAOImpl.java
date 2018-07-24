@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class CustomerDAOImpl implements CustomerDAO
 {
@@ -79,6 +80,9 @@ public class CustomerDAOImpl implements CustomerDAO
         {
             connection =DBConnection.getConnection();
             statementObject=connection.prepareStatement(query);
+            statementObject.setString(1,user);
+            statementObject.setString(2,password);
+            statementObject.executeQuery();
             System.out.println("Query is:"+query);
 
             if(rs.next())
@@ -118,7 +122,62 @@ public class CustomerDAOImpl implements CustomerDAO
         return flag;
     }
 
+    public ArrayList getCustomerByUser(String user) {
 
+        ArrayList<CustomerBO> customerList=new ArrayList<CustomerBO>();
+
+        Connection connection=null;
+        PreparedStatement st=null;
+        ResultSet rs=null;
+
+        String query="select * from customer where customer_name = ?";
+
+        try
+        {
+            connection =DBConnection.getConnection();
+            st=connection.prepareStatement(query);
+            st.setString(1,user);
+            rs=st.executeQuery();
+            while(rs.next())
+            {
+                CustomerBO customer=new CustomerBO();
+                customer.setCustomer_id(rs.getInt("customer_id"));
+                customer.setCustomer_name(rs.getString("customer_name"));
+                customer.setCustomer_birth(rs.getString("customer_birth"));
+                customer.setCustomer_gender(rs.getString("customer_gender"));
+                customer.setCustomer_user_name(rs.getString("customer_user_name"));
+                customer.setCustomer_password(rs.getString("customer_password"));
+                customerList.add(customer);
+            }
+
+
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+        finally {
+            try
+            {
+                if(rs!=null)
+                    rs.close();
+
+                if(st!=null)
+                    st.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return customerList;
+    }
 
 
     public boolean addCustomer(CustomerBO customerBO)
@@ -253,6 +312,5 @@ public class CustomerDAOImpl implements CustomerDAO
         }
         return flagForDelete;
     }
-
 
 }

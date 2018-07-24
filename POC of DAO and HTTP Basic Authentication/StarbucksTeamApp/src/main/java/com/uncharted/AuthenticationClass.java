@@ -3,6 +3,7 @@ package com.uncharted;
 import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class AuthenticationClass
 {
@@ -87,6 +88,22 @@ public class AuthenticationClass
         data= userAndPassword.split(":");
         flag=customerDAO.getCustomerByUserAndPassword(data[0],data[1]);
 
+
         return flag;
+    }
+    public static ArrayList getUserInfo(String name)
+    {
+        String user=null;
+        String password=null;
+        String[] data=null;
+        boolean flag=false;
+        customerBO=null;
+        ArrayList<CustomerBO> customerBOArrayList;
+        CustomerDAO customerDAO=null;
+        customerDAO=CustomerDAOFactory.getInstance();
+        customerBOArrayList=customerDAO.getCustomerByUser(name);
+
+
+        return customerBOArrayList;
     }
 }
