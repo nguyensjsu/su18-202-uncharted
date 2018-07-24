@@ -187,7 +187,7 @@ public class CustomerDAOImpl implements CustomerDAO
         PreparedStatement statementObject=null;
         boolean flagForRegistration=false;
 
-        String query="INSERT INTO customer(customer_id,customer_name,customer_birth,customer_gender,customer_user_name,customer_password) VALUES (?,?,?,?,?,?)";
+        String query="INSERT INTO customer(customer_name,customer_birth,customer_gender,customer_user_name,customer_password) VALUES (?,?,?,?,?)";
 
         try
         {
@@ -195,13 +195,11 @@ public class CustomerDAOImpl implements CustomerDAO
             statementObject=connection.prepareStatement(query);
             System.out.println("Query is:"+query);
             statementObject = connection.prepareStatement(query);
-            statementObject.setInt(1, customerBO.getCustomer_id());
-            statementObject.setString(2, customerBO.getCustomer_name());
-            statementObject.setString(3, customerBO.getCustomer_birth());
-            statementObject.setString(4, customerBO.getCustomer_gender());
-            statementObject.setString(5,customerBO.getCustomer_user_name());
-            statementObject.setString(6, customerBO.getCustomer_password());
-
+            statementObject.setString(1, customerBO.getCustomer_name());
+            statementObject.setString(2, customerBO.getCustomer_birth());
+            statementObject.setString(3, customerBO.getCustomer_gender());
+            statementObject.setString(4,customerBO.getCustomer_user_name());
+            statementObject.setString(5, customerBO.getCustomer_password());
             flagForRegistration= statementObject.execute();
 
 

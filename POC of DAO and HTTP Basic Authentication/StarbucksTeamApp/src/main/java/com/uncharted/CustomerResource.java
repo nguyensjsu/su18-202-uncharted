@@ -25,8 +25,9 @@ public class CustomerResource {
             }
             try {
 
+                CustomerService service=new CustomerService();
                 ObjectMapper mapper = new ObjectMapper();
-                jsonString= mapper.writeValueAsString(AuthenticationClass.customerBO);
+                jsonString= mapper.writeValueAsString(service.getCustomer(id));
                 System.out.println("jsonString:" + jsonString);
 
             } catch (Exception e) {
@@ -53,8 +54,9 @@ public class CustomerResource {
             try
             {
 
+                CustomerService service=new CustomerService();
                 ObjectMapper mapper = new ObjectMapper();
-                ArrayList<CustomerBO> customerBOArrayList=AuthenticationClass.getUserInfo(name);
+                ArrayList<CustomerBO> customerBOArrayList=service.getCustomerByUser(name);
                 jsonString = mapper.writeValueAsString(customerBOArrayList);
 
 
@@ -81,7 +83,6 @@ public class CustomerResource {
         boolean flag=false;
 
         CustomerBO customerBO=new CustomerBO();
-        customerBO.setCustomer_id(obj.getInt("customer_id"));
         customerBO.setCustomer_name(obj.getString("customer_name"));
         customerBO.setCustomer_user_name(obj.getString("customer_user_name"));
         customerBO.setCustomer_password(obj.getString("customer_password"));
@@ -91,9 +92,8 @@ public class CustomerResource {
 
         try
         {
-            CustomerDAO customerDAO=null;
-            customerDAO=CustomerDAOFactory.getInstance();
-            flag=customerDAO.addCustomer(customerBO);
+            CustomerService service=new CustomerService();
+            flag=service.addCustomer(customerBO);
 
             if(flag)
                 status=201;
@@ -130,9 +130,8 @@ public class CustomerResource {
 
         try
         {
-            CustomerDAO customerDAO=null;
-            customerDAO=CustomerDAOFactory.getInstance();
-            flag=customerDAO.updateCustomer(customerBO);
+            CustomerService service=new CustomerService();
+            flag=service.updateCustomer(customerBO);
 
             if(flag)
                 status=200;
@@ -157,9 +156,8 @@ public class CustomerResource {
         try
         {
 
-            CustomerDAO customerDAO=null;
-            customerDAO=CustomerDAOFactory.getInstance();
-            isDeleted= customerDAO.deleteCustomer(1);
+            CustomerService service=new CustomerService();
+            isDeleted= service.deleteCustomer(1);
 
             if(isDeleted)
              status=200;
