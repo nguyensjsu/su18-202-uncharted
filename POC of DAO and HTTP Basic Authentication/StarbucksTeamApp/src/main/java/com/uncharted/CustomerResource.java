@@ -53,13 +53,10 @@ public class CustomerResource {
             try
             {
 
-              ObjectMapper mapper = new ObjectMapper();
-               ArrayList<CustomerBO> customerBOArrayList=AuthenticationClass.getUserInfo(name);
-                for(int i=0;i<customerBOArrayList.size();i++)
-                {
-                    temp = mapper.writeValueAsString(customerBOArrayList.get(i));
-                    jsonString=jsonString+temp;
-                }
+                ObjectMapper mapper = new ObjectMapper();
+                ArrayList<CustomerBO> customerBOArrayList=AuthenticationClass.getUserInfo(name);
+                jsonString = mapper.writeValueAsString(customerBOArrayList);
+
 
             } catch (Exception e) {
                 e.printStackTrace();
