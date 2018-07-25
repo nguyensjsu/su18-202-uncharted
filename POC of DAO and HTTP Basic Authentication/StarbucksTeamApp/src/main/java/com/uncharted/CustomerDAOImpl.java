@@ -200,8 +200,12 @@ public class CustomerDAOImpl implements CustomerDAO
             statementObject.setString(3, customerBO.getCustomer_gender());
             statementObject.setString(4,customerBO.getCustomer_user_name());
             statementObject.setString(5, customerBO.getCustomer_password());
-            flagForRegistration= statementObject.execute();
+            statementObject.execute();
 
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForRegistration=true;
 
         }
         catch (Exception ex) {
@@ -248,7 +252,13 @@ public class CustomerDAOImpl implements CustomerDAO
             statementObject.setString(5, customerBO.getCustomer_password());
             statementObject.setInt(6, customerBO.getCustomer_id());
 
-            flagForUpdate= statementObject.execute();
+            statementObject.execute();
+
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForUpdate=true;
+
 
 
         }
@@ -286,9 +296,13 @@ public class CustomerDAOImpl implements CustomerDAO
         {
             connection =DBConnection.getConnection();
             statementObject = connection.prepareStatement(query);
-            flagForDelete= statementObject.execute();
+            statementObject.execute();
 
 
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForDelete=true;
         }
         catch (Exception ex) {
             ex.printStackTrace();
