@@ -99,19 +99,19 @@ public class MyOrderResource {
             OrderBO bo=os.getOrderById(orderid);
             double total=bo.getOrder_total();
 
-
-
-
-
-
             //**put below 2 in transaction
-            //**call card service and try to reduce card balance if success only then allow payment
+            //call card service and try to reduce card balance if success only then allow payment
+            CardService cs=new CardService();
+            CardBO cbo=cs.getCardByCust(custid);
 
+            if(cbo.getCard_code()==null)
+                return Response.ok("{\"Order Payment\":\"Failed. Card not accepted.\"}").build();
 
+            if(cbo.getCard_balance()<total)
+                return Response.ok("{\"Order Payment\":\"Failed. Not enough balance in card.\"}").build();
 
-
-
-
+            if(!cs.updateCardBalance(cbo.getCard_id(),cbo.getCard_balance()-total))
+                return Response.ok("{\"Order Payment\":\"Failed. Payment unsuccessful.\"}").build();
 
             //update payment datetime in orders
             if(os.payForOrder(orderid))
@@ -162,18 +162,12 @@ public class MyOrderResource {
                 return Response.status(401).build();
             }
 
+            //check if card added else don't allow
+            CardService cs=new CardService();
+            CardBO cbo=cs.getCardByCust(custid);
 
-
-
-
-
-            //**check if card added else don't allow
-
-
-
-
-
-
+            if(cbo.getCard_code()==null)
+                return Response.ok("{\"Order Insertion\":\"Failed. Please add card before ordering.\"}").build();
 
             JSONObject jsonObj = new JSONObject(jsonBody);
             JSONArray array = jsonObj.optJSONArray("menuitems");
