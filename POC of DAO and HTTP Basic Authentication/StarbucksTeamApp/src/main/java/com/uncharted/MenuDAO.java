@@ -9,9 +9,9 @@ public interface MenuDAO {
     ArrayList<MenuBO> getAllMenuItems();
 
     //POST
-    public void addNewItem(MenuBO bo);
-    public void updateItem(MenuBO bo);
+    public boolean addNewItem(MenuBO bo);
+    public boolean updateItem(MenuBO bo);
 
     //DELETE
-    public void deleteItem(int item);
+    public boolean deleteItem(int item);
 }
