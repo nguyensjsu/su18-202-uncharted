@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MyMenuResource
 {
     @GET
-   // @Path("/")
+    @Path("/items")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMenuItems()
     {
@@ -76,6 +76,7 @@ public class MyMenuResource
 
 
     @POST
+    @Path("/ins")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertMenu(String jsonMessage)

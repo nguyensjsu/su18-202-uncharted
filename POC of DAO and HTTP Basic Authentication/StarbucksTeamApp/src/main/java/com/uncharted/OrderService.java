@@ -16,7 +16,7 @@ public class OrderService {
             for(int i=0;i<menuitems.length;i++)
             {
                 final int itemid = menuitems[i];
-                MenuBO b=null; //arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
+                MenuBO b=arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
                 total+=b.getItemPrice();
             }
 
