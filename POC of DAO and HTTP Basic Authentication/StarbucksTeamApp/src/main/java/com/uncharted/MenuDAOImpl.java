@@ -120,7 +120,7 @@ public class MenuDAOImpl implements MenuDAO {
             PreparedStatement statementObject=null;
             boolean flagForUpdate=false;
 
-            String query="update menu SET item_name=? ,item_price=?,store_id=?,category=? where item_id=?";
+            String query="update Menu SET item_name=? ,item_price=?,store_id=?,category=? where item_id=?";
 
             try
             {

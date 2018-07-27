@@ -52,12 +52,10 @@ public class MyMenuResource
 
         MenuBO menuBO=new MenuBO();
         menuBO.setItemID(id);
-        menuBO.setStoreID(obj.getInt("storeID"));
-        menuBO.setCateogory(obj.getString("cateogory"));
-        menuBO.setItemPrice(obj.getInt("itemPrice"));
-        menuBO.setItemName(obj.getString("itemName"));
-
-
+        menuBO.setStoreID(obj.getInt("store_id"));
+        menuBO.setCateogory(obj.getString("category"));
+        menuBO.setItemPrice(obj.getInt("item_price"));
+        menuBO.setItemName(obj.getString("item_name"));
 
         try
         {
