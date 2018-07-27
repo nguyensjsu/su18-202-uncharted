@@ -165,8 +165,45 @@ public class MenuDAOImpl implements MenuDAO {
 
     }
 
-    public boolean deleteItem(int item) {
-        return false;
+    public boolean deleteItem(int id) {
+        Connection connection=null;
+        PreparedStatement statementObject=null;
+        boolean flagForDelete=false;
+
+        String query="DELETE FROM Menu where item_id="+id;
+
+        try
+        {
+            connection =DBConnection.getConnection();
+            statementObject = connection.prepareStatement(query);
+            statementObject.execute();
+
+
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForDelete=true;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            try
+            {
+
+                if(statementObject!=null)
+                    statementObject.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return flagForDelete;
+
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MyMenuResource
 {
     @GET
-    @Path("/")
+   // @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllMenuItems()
     {
@@ -118,7 +118,7 @@ public class MyMenuResource
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteCustomer(@PathParam("id") int id, @HeaderParam("authorization") String authString)
+    public Response deleteCustomer(@PathParam("id") int id)
     {
 
         boolean isDeleted=false;
@@ -127,7 +127,7 @@ public class MyMenuResource
         {
 
             MenuService service=new MenuService();
-            isDeleted= service.deleteitem(1);
+            isDeleted= service.deleteitem(id);
 
             if(isDeleted)
                 status=200;
