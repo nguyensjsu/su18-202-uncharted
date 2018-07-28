@@ -20,3 +20,7 @@
 
 # Deployment Diagram
 ![deployment](https://user-images.githubusercontent.com/31361726/43352273-f6b20cf8-923e-11e8-86ec-5f67e4403ea3.PNG)
+
+# Component Diagram
+![component](https://user-images.githubusercontent.com/31361726/43352289-3275b0f0-923f-11e8-92d7-c26ab4f0ddbd.PNG)
+
