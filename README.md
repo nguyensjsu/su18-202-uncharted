@@ -24,3 +24,5 @@
 # Component Diagram
 ![component](https://user-images.githubusercontent.com/31361726/43352289-3275b0f0-923f-11e8-92d7-c26ab4f0ddbd.PNG)
 
+**Burndown Chart & Sprint Task Sheet**
+[CMPE 202 -Starbucks-SprintTaskSheet-Uncharted4.xlsx](https://github.com/nguyensjsu/su18-202-uncharted/files/2237675/CMPE.202.-Starbucks-SprintTaskSheet-Uncharted4.xlsx)
