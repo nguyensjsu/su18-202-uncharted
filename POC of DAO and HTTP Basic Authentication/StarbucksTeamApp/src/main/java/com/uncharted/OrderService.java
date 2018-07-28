@@ -16,7 +16,7 @@ public class OrderService {
             for(int i=0;i<menuitems.length;i++)
             {
                 final int itemid = menuitems[i];
-                MenuBO b= arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
+                MenuBO b=arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
                 total+=b.getItemPrice();
             }
 
@@ -60,7 +60,7 @@ public class OrderService {
         OrderBO bo=OrderDAOFactory.getInstance().getOrder(orderid);
         String strmenuitems=bo.getOrder_details();
         String[] items=strmenuitems.split(",");
-        ArrayList<Integer> mi=new ArrayList<>();
+        ArrayList<Integer> mi=null;//new ArrayList<>();
         for(int i=0;i<items.length;i++)
         {
             try{
@@ -70,7 +70,7 @@ public class OrderService {
             {
             }
         }
-        int[] menuitems = mi.stream().mapToInt(i -> i).toArray();
+        int[] menuitems =null;// mi.stream().mapToInt(i -> i).toArray();
 
         //call all menu items loop to create description
         MenuService ms=new MenuService();
@@ -80,7 +80,7 @@ public class OrderService {
         for(int i=0;i<menuitems.length;i++)
         {
             final int itemid = menuitems[i];
-            MenuBO b= arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
+            MenuBO b=null;// arrMenuBO.stream().filter(x -> itemid == x.getItemID()).findFirst().orElse(null);
             desc+=b.getItemName()+" + ";
         }
         return desc;

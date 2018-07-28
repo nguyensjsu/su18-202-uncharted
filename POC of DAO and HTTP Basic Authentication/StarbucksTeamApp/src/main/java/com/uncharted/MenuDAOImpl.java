@@ -65,15 +65,145 @@ public class MenuDAOImpl implements MenuDAO {
         return menuList;
     }
 
-    public void addNewItem(MenuBO bo) {
+    public boolean addNewItem(MenuBO bo) {
+
+        Connection connection=null;
+        PreparedStatement statementObject=null;
+        boolean flagForRegistration=false;
+
+        String query="INSERT INTO Menu(item_name,item_price,store_id,category) VALUES (?,?,?,?)";
+
+        try
+        {
+            connection =DBConnection.getConnection();
+            statementObject=connection.prepareStatement(query);
+            System.out.println("Query is:"+query);
+            statementObject = connection.prepareStatement(query);
+
+            statementObject.setString(1, bo.getItemName());
+            statementObject.setDouble(2, bo.getItemPrice());
+            statementObject.setInt(3,bo.getStoreID());
+            statementObject.setString(4, bo.getCateogory());
+            statementObject.execute();
+
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForRegistration=true;
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            try
+            {
+
+                if(statementObject!=null)
+                    statementObject.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return flagForRegistration;
+    }
+
+    public boolean updateItem(MenuBO bo)
+        {
+
+            Connection connection=null;
+            PreparedStatement statementObject=null;
+            boolean flagForUpdate=false;
+
+            String query="update Menu SET item_name=? ,item_price=?,store_id=?,category=? where item_id=?";
+
+            try
+            {
+
+                connection =DBConnection.getConnection();
+                statementObject = connection.prepareStatement(query);
+                statementObject.setString(1, bo.getItemName());
+                statementObject.setDouble(2, bo.getItemPrice());
+                statementObject.setInt(3, bo.getStoreID());
+                statementObject.setString(4,bo.getCateogory());
+                statementObject.setInt(5, bo.getItemID());
+
+                statementObject.execute();
+
+                int count=statementObject.getUpdateCount();
+
+                if(count==1)
+                    flagForUpdate=true;
+
+
+
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            finally {
+                try
+                {
+
+                    if(statementObject!=null)
+                        statementObject.close();
+
+                    if(connection!=null)
+                        connection.close();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return flagForUpdate;
 
     }
 
-    public void updateItem(MenuBO bo) {
+    public boolean deleteItem(int id) {
+        Connection connection=null;
+        PreparedStatement statementObject=null;
+        boolean flagForDelete=false;
+
+        String query="DELETE FROM Menu where item_id="+id;
+
+        try
+        {
+            connection =DBConnection.getConnection();
+            statementObject = connection.prepareStatement(query);
+            statementObject.execute();
+
+
+            int count=statementObject.getUpdateCount();
+
+            if(count==1)
+                flagForDelete=true;
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            try
+            {
+
+                if(statementObject!=null)
+                    statementObject.close();
+
+                if(connection!=null)
+                    connection.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return flagForDelete;
 
     }
 
-    public void deleteItem(int item) {
-
-    }
 }

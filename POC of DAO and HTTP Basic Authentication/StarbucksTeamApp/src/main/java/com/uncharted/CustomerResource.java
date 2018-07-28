@@ -155,9 +155,13 @@ public class CustomerResource {
         int status = 0;
         try
         {
+            if (!AuthenticationClass.bCheckIfAuthenticated(authString,id)) {
+                String json = "{error:User not authenticated}";
 
+                return Response.status(401).build();
+            }
             CustomerService service=new CustomerService();
-            isDeleted= service.deleteCustomer(1);
+            isDeleted= service.deleteCustomer(id);
 
             if(isDeleted)
              status=200;
