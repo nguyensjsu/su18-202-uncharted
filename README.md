@@ -17,3 +17,5 @@
 5. Authentication with every request.
 6. Authorization check for every request.
 7. Automatic total generation of order.
+
+![deployment](https://user-images.githubusercontent.com/31361726/43352273-f6b20cf8-923e-11e8-86ec-5f67e4403ea3.PNG)
